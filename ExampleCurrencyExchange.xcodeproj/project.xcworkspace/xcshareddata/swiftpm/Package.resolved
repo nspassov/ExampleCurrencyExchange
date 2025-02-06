@@ -1,0 +1,15 @@
+{
+  "originHash" : "3fe1de3274ebb8c1c5aca5891730d90d4ae806568a2788318ff5b01680549df9",
+  "pins" : [
+    {
+      "identity" : "spaextensions",
+      "kind" : "remoteSourceControl",
+      "location" : "git@github.com:nspassov/SPAExtensions.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "528460d62ef996e2ca8821c341d8828d65c4bc5d"
+      }
+    }
+  ],
+  "version" : 3
+}

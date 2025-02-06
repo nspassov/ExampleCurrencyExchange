@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		01CDBF2E2D54E6B5008D9683 /* SPAExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 01CDBF2D2D54E6B5008D9683 /* SPAExtensions */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		01CDBF102D54E64F008D9683 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -29,9 +33,22 @@
 		01CDBF192D54E64F008D9683 /* ExampleCurrencyExchangeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleCurrencyExchangeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		01CDBF302D54EAEB008D9683 /* Exceptions for "ExampleCurrencyExchange" folder in "ExampleCurrencyExchange" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 01CDBEFE2D54E64E008D9683 /* ExampleCurrencyExchange */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		01CDBF012D54E64E008D9683 /* ExampleCurrencyExchange */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				01CDBF302D54EAEB008D9683 /* Exceptions for "ExampleCurrencyExchange" folder in "ExampleCurrencyExchange" target */,
+			);
 			path = ExampleCurrencyExchange;
 			sourceTree = "<group>";
 		};
@@ -52,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01CDBF2E2D54E6B5008D9683 /* SPAExtensions in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +130,7 @@
 			);
 			name = ExampleCurrencyExchange;
 			packageProductDependencies = (
+				01CDBF2D2D54E6B5008D9683 /* SPAExtensions */,
 			);
 			productName = ExampleCurrencyExchange;
 			productReference = 01CDBEFF2D54E64E008D9683 /* ExampleCurrencyExchange.app */;
@@ -195,6 +214,9 @@
 			);
 			mainGroup = 01CDBEF62D54E64E008D9683;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				01CDBF2C2D54E6B5008D9683 /* XCRemoteSwiftPackageReference "SPAExtensions" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 01CDBF002D54E64E008D9683 /* Products */;
 			projectDirPath = "";
@@ -399,11 +421,13 @@
 				DEVELOPMENT_TEAM = 3R6F27739H;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ExampleCurrencyExchange/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -412,7 +436,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = net.apperi.ExampleCurrencyExchange;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -428,11 +452,13 @@
 				DEVELOPMENT_TEAM = 3R6F27739H;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ExampleCurrencyExchange/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -441,7 +467,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = net.apperi.ExampleCurrencyExchange;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -558,6 +584,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		01CDBF2C2D54E6B5008D9683 /* XCRemoteSwiftPackageReference "SPAExtensions" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:nspassov/SPAExtensions.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		01CDBF2D2D54E6B5008D9683 /* SPAExtensions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 01CDBF2C2D54E6B5008D9683 /* XCRemoteSwiftPackageReference "SPAExtensions" */;
+			productName = SPAExtensions;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 01CDBEF72D54E64E008D9683 /* Project object */;
 }
