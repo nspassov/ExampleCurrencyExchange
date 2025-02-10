@@ -33,7 +33,7 @@ extension APIClient {
     }
 }
 
-struct MoneyAmount: Decodable {
+struct MoneyAmount: Decodable, CustomStringConvertible {
     let amount: String
     let currency: String
     
@@ -46,5 +46,9 @@ struct MoneyAmount: Decodable {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         amount = try c.decode(String.self, forKey: .amount)
         currency = try c.decode(String.self, forKey: .currency)
+    }
+    
+    var description: String {
+        return amount ++ currency
     }
 }

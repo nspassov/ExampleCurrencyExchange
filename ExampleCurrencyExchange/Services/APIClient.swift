@@ -8,7 +8,7 @@
 import Foundation
 import SPAExtensions
 
-class APIClient {
+actor APIClient {
     let urlSession: URLSession = URLSession.shared
 }
 

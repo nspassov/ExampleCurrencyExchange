@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		01CDBF2E2D54E6B5008D9683 /* SPAExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 01CDBF2D2D54E6B5008D9683 /* SPAExtensions */; };
+		01CDBF552D5A0291008D9683 /* SPAComponents in Frameworks */ = {isa = PBXBuildFile; productRef = 01CDBF542D5A0291008D9683 /* SPAComponents */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				01CDBF2E2D54E6B5008D9683 /* SPAExtensions in Frameworks */,
+				01CDBF552D5A0291008D9683 /* SPAComponents in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,6 +133,7 @@
 			name = ExampleCurrencyExchange;
 			packageProductDependencies = (
 				01CDBF2D2D54E6B5008D9683 /* SPAExtensions */,
+				01CDBF542D5A0291008D9683 /* SPAComponents */,
 			);
 			productName = ExampleCurrencyExchange;
 			productReference = 01CDBEFF2D54E64E008D9683 /* ExampleCurrencyExchange.app */;
@@ -216,6 +219,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				01CDBF2C2D54E6B5008D9683 /* XCRemoteSwiftPackageReference "SPAExtensions" */,
+				01CDBF532D5A0291008D9683 /* XCRemoteSwiftPackageReference "SPAComponents" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 01CDBF002D54E64E008D9683 /* Products */;
@@ -594,6 +598,14 @@
 				kind = branch;
 			};
 		};
+		01CDBF532D5A0291008D9683 /* XCRemoteSwiftPackageReference "SPAComponents" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:nspassov/SPAComponents.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -601,6 +613,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 01CDBF2C2D54E6B5008D9683 /* XCRemoteSwiftPackageReference "SPAExtensions" */;
 			productName = SPAExtensions;
+		};
+		01CDBF542D5A0291008D9683 /* SPAComponents */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 01CDBF532D5A0291008D9683 /* XCRemoteSwiftPackageReference "SPAComponents" */;
+			productName = SPAComponents;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

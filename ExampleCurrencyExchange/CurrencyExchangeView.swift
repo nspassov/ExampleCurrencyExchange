@@ -12,10 +12,20 @@ struct CurrencyExchangeView: View {
     @ObservedObject var viewModel: CurrencyExchangeViewModel = CurrencyExchangeViewModel()
     
     private let currencies = ISO4217Code.allCases.map { $0.code }
+    
     @State private var amount: String = ""
-    @State private var sourceCurrency: String = "EUR"
-    @State private var destinationCurrency: String = "BGN"
-    @State private var convertedAmount: String = ""
+    @State private var sourceCurrency: String = "USD"
+    @State private var destinationCurrency: String = "ZAR"
+    @State private var convertedAmount: String?
+    
+    private enum FocusedField {
+        case sourceAmount
+    }
+    
+    @FocusState private var focusedField: FocusedField?
+    
+    init() {
+    }
     
     var body: some View {
         VStack(spacing: 20) {
@@ -23,9 +33,16 @@ struct CurrencyExchangeView: View {
                 .font(.largeTitle)
                 .fontWeight(.bold)
             
-            TextField("Enter amount", text: $amount)
+            TextField("0", text: $amount)
                 .keyboardType(.decimalPad)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
+                .onChange(of: amount, { oldValue, newValue in
+                    convert()
+                })
+                .focused($focusedField, equals: .sourceAmount)
+                .task {
+                    self.focusedField = .sourceAmount
+                }
                 .padding()
             
             HStack {
@@ -37,6 +54,9 @@ struct CurrencyExchangeView: View {
                             Text(currency)
                         }
                     }
+                    .onChange(of: sourceCurrency, { oldValue, newValue in
+                        convert()
+                    })
                     .pickerStyle(MenuPickerStyle())
                 }
                 .padding()
@@ -52,22 +72,14 @@ struct CurrencyExchangeView: View {
                         }
                     }
                     .pickerStyle(MenuPickerStyle())
+                    .onChange(of: destinationCurrency, { oldValue, newValue in
+                        convert()
+                    })
                 }
                 .padding()
             }
             
-            Button(action: convert) {
-                Text("Convert")
-                    .font(.title2)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-            }
-            .padding()
-            
-            Text("Converted Amount: \(convertedAmount)")
+            Text(viewModel.destinationAmount?.toString() ?? "0")
                 .font(.title3)
                 .padding()
             
@@ -78,9 +90,9 @@ struct CurrencyExchangeView: View {
     
     func convert() {
         Task {
-            self.convertedAmount = await viewModel.convert(sourceAmount: amount,
-                                                           sourceCurrency: sourceCurrency,
-                                                           destinationCurrency: destinationCurrency)
+            await viewModel.convert(sourceAmount: amount,
+                                    sourceCurrency: sourceCurrency,
+                                    destinationCurrency: destinationCurrency)
         }
     }
 }

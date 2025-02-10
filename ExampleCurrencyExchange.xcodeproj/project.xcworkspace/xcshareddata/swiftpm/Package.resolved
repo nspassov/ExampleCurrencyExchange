@@ -1,6 +1,42 @@
 {
-  "originHash" : "3fe1de3274ebb8c1c5aca5891730d90d4ae806568a2788318ff5b01680549df9",
+  "originHash" : "f76277e8cbd0849d3116dc08c0ccb01566d1931a7e6788011c9348b2949a559d",
   "pins" : [
+    {
+      "identity" : "fuse-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nspassov/fuse-swift",
+      "state" : {
+        "branch" : "master",
+        "revision" : "26ba868691b2d8b7bf2b1322951eb591be70ccca"
+      }
+    },
+    {
+      "identity" : "ios-datepicker",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/cianru/ios-datepicker",
+      "state" : {
+        "revision" : "b37536d80128da3234715cc96cd7054b6556dfcb",
+        "version" : "1.0.0"
+      }
+    },
+    {
+      "identity" : "nvactivityindicatorview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ninjaprox/NVActivityIndicatorView.git",
+      "state" : {
+        "revision" : "121455c4e630fcb95aaefd7e4257b0c2e3cfe6d5",
+        "version" : "5.2.0"
+      }
+    },
+    {
+      "identity" : "spacomponents",
+      "kind" : "remoteSourceControl",
+      "location" : "git@github.com:nspassov/SPAComponents.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "cfe4b655c57837af611e5e7c8f99a46eb45b08ba"
+      }
+    },
     {
       "identity" : "spaextensions",
       "kind" : "remoteSourceControl",
@@ -8,6 +44,15 @@
       "state" : {
         "branch" : "main",
         "revision" : "528460d62ef996e2ca8821c341d8828d65c4bc5d"
+      }
+    },
+    {
+      "identity" : "swiftmessages",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SwiftKickMobile/SwiftMessages",
+      "state" : {
+        "revision" : "c544df6ce316422b9d65a571f932e800213dd09c",
+        "version" : "10.0.1"
       }
     }
   ],

@@ -62,7 +62,7 @@ extension NSDecimalNumber {
     
     private static let formatter = NumberFormatter()
     
-    func toString(_ locale: Locale = .current) -> String {
+    func toString(locale: Locale = .current) -> String {
         Self.formatter.locale = locale
         Self.formatter.numberStyle = .decimal
         Self.formatter.maximumFractionDigits = 2
@@ -71,6 +71,9 @@ extension NSDecimalNumber {
     }
     
     static func from(string: String, locale: Locale = .current) -> NSDecimalNumber? {
+        guard !string.isEmpty else {
+            return NSDecimalNumber.zero
+        }
         Self.formatter.locale = locale
         Self.formatter.numberStyle = .decimal
         Self.formatter.maximumFractionDigits = 2
@@ -80,4 +83,8 @@ extension NSDecimalNumber {
         }
         return nil
     }
+}
+
+extension Locale {
+    static let posix = Locale(identifier: "en_US_POSIX")
 }

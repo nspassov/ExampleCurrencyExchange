@@ -5,40 +5,48 @@
 //  Created by Nikolay Spassov on 6.02.25.
 //
 
-import SwiftUI
+import Foundation
+import SPAExtensions
+import SPAComponents
 
 @MainActor
-class CurrencyExchangeViewModel: ObservableObject {
+class CurrencyExchangeViewModel: ObservableObject, EventNotifying {
     
-    var sourceAmount: NSDecimalNumber = 100.25
-    var sourceCurrency: ISO4217Code = .eur
-    
-    var destinationAmount: NSDecimalNumber = 0
-    var destinationCurrency: ISO4217Code = .bgn
+    @Published private(set) var sourceCurrency: ISO4217Code?
+    @Published private(set) var sourceAmount: NSDecimalNumber?
+    @Published private(set) var destinationCurrency: ISO4217Code?
+    @Published private(set) var destinationAmount: NSDecimalNumber?
     
     func convert(sourceAmount: String,
                  sourceCurrency: String,
-                 destinationCurrency: String) async -> String {
+                 destinationCurrency: String) async {
         
         guard let sourceAmount = NSDecimalNumber.from(string: sourceAmount),
               let sourceCurrency = ISO4217Code(code: sourceCurrency),
               let destinationCurrency = ISO4217Code(code: destinationCurrency) else {
-            return "Input Error"
+            self.notify(CommonError.client(.invalidInput))
+            return
         }
         
         Task {
-            let result = await APIClient().getCurrencyExchange(amount: sourceAmount.toString(),
-                                                                     sourceCurrency: sourceCurrency.code,
-                                                                     destinationCurrency: destinationCurrency.code)
-            print(result)
+            let result = await APIClient().getCurrencyExchange(amount: sourceAmount.toString(locale: .posix),
+                                                               sourceCurrency: sourceCurrency.code,
+                                                               destinationCurrency: destinationCurrency.code)
             switch result {
             case .success(let value):
-                return value.amount
+                debugLog(value)
+                if let amount = NSDecimalNumber.from(string: value.amount, locale: .posix),
+                   let currency = ISO4217Code(code: value.currency) {
+                    self.destinationAmount = amount
+                    self.destinationCurrency = currency
+                }
+                else {
+                    self.notify(CommonError.server(.apiResponse))
+                }
             case .failure(let error):
-                return error.description
+                self.notify(error)
             }
         }
-        return "Error"
     }
     
     func getCurrencyCodes() -> [String] {

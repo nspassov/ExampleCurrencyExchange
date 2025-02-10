@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SPAExtensions
 
 enum ISO4217Code: String, CustomStringConvertible, CaseIterable {
     case usd
@@ -14,9 +13,16 @@ enum ISO4217Code: String, CustomStringConvertible, CaseIterable {
     case bgn
     case pln
     case sek
+    case `try`
+    case rub
+    case ars
+    case zar
+    case zwl
+    case aud
+    case jpy
     
     var description: String {
-        return country ++ code
+        return code
     }
     
     var code: String {
@@ -27,18 +33,5 @@ enum ISO4217Code: String, CustomStringConvertible, CaseIterable {
         self.init(rawValue: code.lowercased())
     }
     
-    var country: String {
-        switch self {
-        case .usd:
-            return "🇺🇸"
-        case .eur:
-            return "🇪🇺"
-        case .bgn:
-            return "🇧🇬"
-        case .pln:
-            return "🇵🇱"
-        case .sek:
-            return "🇸🇪"
-        }
-    }
+    static let flags: [String] = [ "🇺🇸", "🇪🇺", "🇧🇬", "🇵🇱", "🇸🇪", "🇹🇷", "🇷🇺", "🇦🇷", "🇿🇦", "🇿🇼", "🇦🇺", "🇯🇵" ]
 }
