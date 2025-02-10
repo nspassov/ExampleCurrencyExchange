@@ -9,21 +9,27 @@ import SwiftUI
 
 struct CurrencyExchangeView: View {
     
-    @ObservedObject var viewModel: CurrencyExchangeViewModel = CurrencyExchangeViewModel()
+    @ObservedObject var viewModel: CurrencyExchangeViewModel
     
     @State private var amount: String = ""
-    @State private var sourceCurrency: String = "USD"
-    @State private var destinationCurrency: String = "ZAR"
-    @State private var destinationAmount: String = ""
+    @State private var sourceCurrency: String = "BGN"
+    @State private var destinationCurrency: String = "EUR"
+    @State private var readOnlyAmount: String = ""
     
     @FocusState private var focusedField: FocusedField?
     private enum FocusedField {
-        case sourceAmount
+        case amountField
     }
     
+    @State private var swapped: Bool = false {
+        didSet {
+            self.convert()
+        }
+    }
+    @Namespace private var namespace
+    
     init(viewModel: CurrencyExchangeViewModel) {
-        self.sourceCurrency = viewModel.sourceCurrency?.code ?? ""
-        self.destinationCurrency = viewModel.destinationCurrency?.code ?? ""
+        self.viewModel = viewModel
     }
     
     var body: some View {
@@ -35,23 +41,41 @@ struct CurrencyExchangeView: View {
             
             HStack {
                 Spacer()
-                TextField(viewModel.sourceAmount.toString(locale: .current), text: $amount)
+                Text("I have")
+                    .font(.title2)
+                    .padding()
+                TextField(viewModel.sourceAmount.toString(locale: .current),
+                          text: $amount)
                     .keyboardType(.decimalPad)
                     .textFieldStyle(PlainTextFieldStyle())
                     .multilineTextAlignment(.trailing)
                     .font(.title)
-                    .onChange(of: amount, { oldValue, newValue in
+                    .onChange(of: amount, perform: { newValue in
                         convert()
                     })
-                    .focused($focusedField, equals: .sourceAmount)
+                    .focused($focusedField, equals: .amountField)
                     .task {
-                        self.focusedField = .sourceAmount
+                        self.focusedField = .amountField
                     }
-                    .padding()
+//                    .padding()
+                    .matchedGeometryEffect(
+                        id: swapped ? "second" : "first",
+                        in: namespace,
+                        properties: .position,
+                        anchor: .trailing,
+                        isSource: false
+                    )
+                    .matchedGeometryEffect(
+                        id: "first",
+                        in: namespace,
+                        properties: .position,
+                        anchor: .trailing,
+                        isSource: true
+                    )
                 
                 Picker("Source Currency", selection: $sourceCurrency) {
                     ForEach(viewModel.supportedCurrencies
-                        .filter { $0 != viewModel.destinationCurrency }
+                        .filter { $0.code != destinationCurrency }
                         .map { $0.code },
                             id: \.self) { code in
                         if let currency = ISO4217Code(code: code) {
@@ -61,17 +85,49 @@ struct CurrencyExchangeView: View {
                 }
                 .pickerStyle(MenuPickerStyle())
                 .font(.title2)
-                .onChange(of: sourceCurrency, { oldValue, newValue in
+                .padding()
+                .onChange(of: sourceCurrency, perform: { newValue in
                     convert()
                 })
             }
             
+            Button {
+                withAnimation {
+                    swapped.toggle()
+                }
+            } label: {
+                Image(systemName: "arrow.trianglehead.swap")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 44, height: 44)
+            }
+
+            
             HStack {
                 Spacer()
-                Text(viewModel.destinationAmount?.toString() ?? "")
+                Text("I want")
+                    .font(.title2)
+                    .padding()
+                TextField(swapped ? viewModel.sourceAmount.toString() : viewModel.destinationAmount.toString(),
+                          text: $readOnlyAmount)
+                    .textFieldStyle(PlainTextFieldStyle())
                     .multilineTextAlignment(.trailing)
                     .font(.title)
-                    .padding()
+                    .disabled(true)
+                    .matchedGeometryEffect(
+                        id: swapped ? "first" : "second",
+                        in: namespace,
+                        properties: .position,
+                        anchor: .trailing,
+                        isSource: false
+                    )
+                    .matchedGeometryEffect(
+                        id: "second",
+                        in: namespace,
+                        properties: .position,
+                        anchor: .trailing,
+                        isSource: true
+                    )
                 
                 Picker("Destination Currency", selection: $destinationCurrency) {
                     ForEach(viewModel.supportedCurrencies
@@ -85,7 +141,8 @@ struct CurrencyExchangeView: View {
                 }
                 .pickerStyle(MenuPickerStyle())
                 .font(.title2)
-                .onChange(of: destinationCurrency, { oldValue, newValue in
+                .padding()
+                .onChange(of: destinationCurrency, perform: { newValue in
                     convert()
                 })
             }
@@ -96,34 +153,19 @@ struct CurrencyExchangeView: View {
     
     func convert() {
         Task {
-            await viewModel.convert(sourceAmount: amount,
-                                    sourceCurrency: sourceCurrency,
-                                    destinationCurrency: destinationCurrency)
+            if !swapped {
+                await viewModel.convert(sourceAmount: amount,
+                                        sourceCurrency: sourceCurrency,
+                                        destinationCurrency: destinationCurrency)
+            }
+            else {
+                await viewModel.convert(destinationAmount: amount,
+                                        sourceCurrency: sourceCurrency,
+                                        destinationCurrency: destinationCurrency)
+            }
         }
     }
 }
-
-//struct AnimatableNumberModifier: AnimatableModifier {
-//    var number: NSDecimalNumber
-//    
-//    nonisolated var animatableData: NSDecimalNumber {
-//        get { number }
-//        set { number = newValue }
-//    }
-//    
-//    func body(content: Content) -> some View {
-//        content
-//            .overlay(
-//                Text("\(number.toString())")
-//            )
-//    }
-//}
-//
-//extension View {
-//    func animatingOverlay(for number: NSDecimalNumber) -> some View {
-//        modifier(AnimatableNumberModifier(number: number))
-//    }
-//}
 
 #Preview {
     CurrencyExchangeView(viewModel: CurrencyExchangeViewModel())

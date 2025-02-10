@@ -10,11 +10,23 @@ import SPAExtensions
 
 extension APIClient {
     
-    func getCurrencyExchange(amount: String,
+    enum ExchangeAmount {
+        case source(String)
+        case destination(String)
+    }
+    
+    func getCurrencyExchange(amount: ExchangeAmount,
                              sourceCurrency: String,
                              destinationCurrency: String) async -> Result<MoneyAmount, CommonError> {
         
-        let urlString = "http://api.evp.lt/currency/commercial/exchange/\(amount)-\(sourceCurrency)/\(destinationCurrency)/latest"
+        let urlString = {
+            switch amount {
+            case .source(let a):
+                return "http://api.evp.lt/currency/commercial/exchange/\(a)-\(sourceCurrency)/\(destinationCurrency)/latest"
+            case .destination(let a):
+                return "http://api.evp.lt/currency/commercial/exchange/\(sourceCurrency)/\(a)-\(destinationCurrency)/latest"
+            }
+        }()
         
         let request = URLRequest(url: URL(string: urlString)!)
         
