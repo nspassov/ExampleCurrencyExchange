@@ -41,7 +41,7 @@ struct CurrencyExchangeView: View {
             
             HStack {
                 Spacer()
-                Text("I have")
+                Text(swapped ? "I need" : "I have")
                     .font(.title2)
                     .padding()
                 TextField(viewModel.sourceAmount.toString(locale: .current),
@@ -85,6 +85,7 @@ struct CurrencyExchangeView: View {
                 }
                 .pickerStyle(MenuPickerStyle())
                 .font(.title2)
+                .fixedSize(horizontal: true, vertical: false)
                 .padding()
                 .onChange(of: sourceCurrency, perform: { newValue in
                     convert()
@@ -105,10 +106,10 @@ struct CurrencyExchangeView: View {
             
             HStack {
                 Spacer()
-                Text("I want")
+                Text(swapped ? "to get" : "I get")
                     .font(.title2)
                     .padding()
-                TextField(swapped ? viewModel.sourceAmount.toString() : viewModel.destinationAmount.toString(),
+                TextField(swapped ? viewModel.sourceAmount.toString(locale: .current) : viewModel.destinationAmount.toString(locale: .current),
                           text: $readOnlyAmount)
                     .textFieldStyle(PlainTextFieldStyle())
                     .multilineTextAlignment(.trailing)
@@ -141,6 +142,7 @@ struct CurrencyExchangeView: View {
                 }
                 .pickerStyle(MenuPickerStyle())
                 .font(.title2)
+                .fixedSize(horizontal: true, vertical: false)
                 .padding()
                 .onChange(of: destinationCurrency, perform: { newValue in
                     convert()

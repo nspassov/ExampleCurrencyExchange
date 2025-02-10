@@ -1,5 +1,5 @@
 {
-  "originHash" : "f76277e8cbd0849d3116dc08c0ccb01566d1931a7e6788011c9348b2949a559d",
+  "originHash" : "0d90258777488990c008ab3d888a7293517e08063d84fe0d8df953f336ad1701",
   "pins" : [
     {
       "identity" : "fuse-swift",
@@ -43,7 +43,7 @@
       "location" : "git@github.com:nspassov/SPAExtensions.git",
       "state" : {
         "branch" : "main",
-        "revision" : "528460d62ef996e2ca8821c341d8828d65c4bc5d"
+        "revision" : "6f80498c19f5554c8d6bc094c7db6c254d8cb45b"
       }
     },
     {

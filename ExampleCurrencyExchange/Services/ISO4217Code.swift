@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SPAExtensions
 
 enum ISO4217Code: String, CustomStringConvertible, CaseIterable, Comparable {
     case usd
@@ -27,7 +26,7 @@ enum ISO4217Code: String, CustomStringConvertible, CaseIterable, Comparable {
     }
     
     var description: String {
-        return flag ++ code
+        return "\(flag)\u{00A0}\(code)"
     }
     
     var code: String {
