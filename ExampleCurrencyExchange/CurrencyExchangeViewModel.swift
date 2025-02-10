@@ -13,11 +13,19 @@ import SPAComponents
 @MainActor
 class CurrencyExchangeViewModel: ObservableObject, EventNotifying {
     
-    @Published private(set) var sourceCurrency: ISO4217Code?
-    @Published private(set) var sourceAmount: NSDecimalNumber?
-    @Published private(set) var destinationCurrency: ISO4217Code?
-    @Published private(set) var destinationAmount: NSDecimalNumber?
-    @Published private(set) var supportedCurrencies = ISO4217Code.allCases
+    @Published private(set) var sourceCurrency: ISO4217Code? = .usd
+    @Published private(set) var sourceAmount: NSDecimalNumber = .zero
+    @Published private(set) var destinationCurrency: ISO4217Code? = .zar
+    @Published private(set) var destinationAmount: NSDecimalNumber? = .zero
+    @Published private(set) var supportedCurrencies = ISO4217Code.allCases.sorted()
+    
+    private(set) var error: CommonError? {
+        didSet {
+            if let error = error, error.description != (oldValue?.description ?? "") {
+                self.notify(error)
+            }
+        }
+    }
     
     private var timer: AnyCancellable?
     
@@ -27,20 +35,21 @@ class CurrencyExchangeViewModel: ObservableObject, EventNotifying {
         
         self.timer = nil
         
-        self.sourceAmount = NSDecimalNumber.from(string: sourceAmount, locale: .current)
-        self.sourceCurrency = ISO4217Code(code: sourceCurrency)
-        self.destinationCurrency = ISO4217Code(code: destinationCurrency)
+        guard let sourceAmount = NSDecimalNumber.from(string: sourceAmount, locale: .current) else {
+            self.error = CommonError.custom("Invalid amount")
+            return
+        }
+        self.sourceAmount = sourceAmount
         
-        guard let sourceAmount = self.sourceAmount else {
-            self.notify(CommonError.custom("Invalid amount \(sourceAmount)"))
-            return
-        }
+        self.sourceCurrency = ISO4217Code(code: sourceCurrency)
         guard let sourceCurrency = self.sourceCurrency else {
-            self.notify(CommonError.custom("Invalid source currency"))
+            self.error = CommonError.custom("Invalid source currency")
             return
         }
+        
+        self.destinationCurrency = ISO4217Code(code: destinationCurrency)
         guard let destinationCurrency = self.destinationCurrency else {
-            self.notify(CommonError.custom("Invalid destination currency"))
+            self.error = CommonError.custom("Invalid destination currency")
             return
         }
         
@@ -65,21 +74,20 @@ class CurrencyExchangeViewModel: ObservableObject, EventNotifying {
                     })
             }
             else {
-                self.notify(CommonError.server(.apiResponse))
+                self.error = CommonError.server(.apiResponse)
             }
         case .failure(let error):
-            self.notify(error)
+            self.error = error
         }
     }
     
     private func convert() async {
-        guard let sourceAmount = sourceAmount?.toString(locale: .current),
-              let sourceCurrency = sourceCurrency?.code,
+        guard let sourceCurrency = sourceCurrency?.code,
               let destinationCurrency = destinationCurrency?.code else {
             debugLog("Missing parameters")
             return
         }
-        await self.convert(sourceAmount: sourceAmount,
+        await self.convert(sourceAmount: sourceAmount.toString(locale: .current),
                            sourceCurrency: sourceCurrency,
                            destinationCurrency: destinationCurrency)
     }

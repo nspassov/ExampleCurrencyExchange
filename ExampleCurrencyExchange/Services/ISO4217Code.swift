@@ -8,7 +8,7 @@
 import Foundation
 import SPAExtensions
 
-enum ISO4217Code: String, CustomStringConvertible, CaseIterable {
+enum ISO4217Code: String, CustomStringConvertible, CaseIterable, Comparable {
     case usd
     case eur
     case bgn
@@ -21,6 +21,10 @@ enum ISO4217Code: String, CustomStringConvertible, CaseIterable {
     case zwl
     case aud
     case jpy
+    
+    static func < (lhs: ISO4217Code, rhs: ISO4217Code) -> Bool {
+        return lhs.code < rhs.code
+    }
     
     var description: String {
         return flag ++ code
@@ -35,17 +39,19 @@ enum ISO4217Code: String, CustomStringConvertible, CaseIterable {
     }
     
     var flag: String {
-        return [ .usd: "🇺🇸",
-                 .eur: "🇪🇺",
-                 .bgn: "🇧🇬",
-                 .pln: "🇵🇱",
-                 .sek: "🇸🇪",
-                 .try: "🇹🇷",
-                 .rub: "🇷🇺",
-                 .ars: "🇦🇷",
-                 .zar: "🇿🇦",
-                 .zwl: "🇿🇼",
-                 .aud: "🇦🇺",
-                 .jpy: "🇯🇵" ][self] ?? ""
+        return Self.flags[self] ?? ""
     }
+    
+    private static let flags = [ Self.usd: "🇺🇸",
+                                 Self.eur: "🇪🇺",
+                                 Self.bgn: "🇧🇬",
+                                 Self.pln: "🇵🇱",
+                                 Self.sek: "🇸🇪",
+                                 Self.try: "🇹🇷",
+                                 Self.rub: "🇷🇺",
+                                 Self.ars: "🇦🇷",
+                                 Self.zar: "🇿🇦",
+                                 Self.zwl: "🇿🇼",
+                                 Self.aud: "🇦🇺",
+                                 Self.jpy: "🇯🇵" ]
 }

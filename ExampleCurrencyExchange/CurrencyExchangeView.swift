@@ -14,15 +14,16 @@ struct CurrencyExchangeView: View {
     @State private var amount: String = ""
     @State private var sourceCurrency: String = "USD"
     @State private var destinationCurrency: String = "ZAR"
-    @State private var convertedAmount: String?
+    @State private var destinationAmount: String = ""
     
+    @FocusState private var focusedField: FocusedField?
     private enum FocusedField {
         case sourceAmount
     }
     
-    @FocusState private var focusedField: FocusedField?
-    
-    init() {
+    init(viewModel: CurrencyExchangeViewModel) {
+        self.sourceCurrency = viewModel.sourceCurrency?.code ?? ""
+        self.destinationCurrency = viewModel.destinationCurrency?.code ?? ""
     }
     
     var body: some View {
@@ -30,64 +31,67 @@ struct CurrencyExchangeView: View {
             Text("Currency Exchange")
                 .font(.largeTitle)
                 .fontWeight(.bold)
-            
-            TextField(NSDecimalNumber.zero.toString(locale: .current), text: $amount)
-                .keyboardType(.decimalPad)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .onChange(of: amount, { oldValue, newValue in
-                    convert()
-                })
-                .focused($focusedField, equals: .sourceAmount)
-                .task {
-                    self.focusedField = .sourceAmount
-                }
                 .padding()
             
             HStack {
-                VStack(alignment: .leading) {
-                    Text("From")
-                        .font(.headline)
-                    Picker("Source Currency", selection: $sourceCurrency) {
-                        ForEach(viewModel.supportedCurrencies.map { $0.code }, id: \.self) { code in
-                            if let currency = ISO4217Code(code: code) {
-                                Text(currency.description)
-                            }
-                        }
-                    }
-                    .onChange(of: sourceCurrency, { oldValue, newValue in
-                        convert()
-                    })
-                    .pickerStyle(MenuPickerStyle())
-                }
-                .padding()
-                
                 Spacer()
-                
-                VStack(alignment: .leading) {
-                    Text("To")
-                        .font(.headline)
-                    Picker("Destination Currency", selection: $destinationCurrency) {
-                        ForEach(viewModel.supportedCurrencies.map { $0.code }, id: \.self) { code in
-                            if let currency = ISO4217Code(code: code) {
-                                Text(currency.description)
-                            }
-                        }
-                    }
-                    .pickerStyle(MenuPickerStyle())
-                    .onChange(of: destinationCurrency, { oldValue, newValue in
+                TextField(viewModel.sourceAmount.toString(locale: .current), text: $amount)
+                    .keyboardType(.decimalPad)
+                    .textFieldStyle(PlainTextFieldStyle())
+                    .multilineTextAlignment(.trailing)
+                    .font(.title)
+                    .onChange(of: amount, { oldValue, newValue in
                         convert()
                     })
+                    .focused($focusedField, equals: .sourceAmount)
+                    .task {
+                        self.focusedField = .sourceAmount
+                    }
+                    .padding()
+                
+                Picker("Source Currency", selection: $sourceCurrency) {
+                    ForEach(viewModel.supportedCurrencies
+                        .filter { $0 != viewModel.destinationCurrency }
+                        .map { $0.code },
+                            id: \.self) { code in
+                        if let currency = ISO4217Code(code: code) {
+                            Text(currency.description)
+                        }
+                    }
                 }
-                .padding()
+                .pickerStyle(MenuPickerStyle())
+                .font(.title2)
+                .onChange(of: sourceCurrency, { oldValue, newValue in
+                    convert()
+                })
             }
             
-            Text(viewModel.destinationAmount?.toString() ?? "0")
-                .font(.title3)
-                .padding()
+            HStack {
+                Spacer()
+                Text(viewModel.destinationAmount?.toString() ?? "")
+                    .multilineTextAlignment(.trailing)
+                    .font(.title)
+                    .padding()
+                
+                Picker("Destination Currency", selection: $destinationCurrency) {
+                    ForEach(viewModel.supportedCurrencies
+                        .filter { $0 != viewModel.sourceCurrency }
+                        .map { $0.code },
+                            id: \.self) { code in
+                        if let currency = ISO4217Code(code: code) {
+                            Text(currency.description)
+                        }
+                    }
+                }
+                .pickerStyle(MenuPickerStyle())
+                .font(.title2)
+                .onChange(of: destinationCurrency, { oldValue, newValue in
+                    convert()
+                })
+            }
             
             Spacer()
         }
-        .padding()
     }
     
     func convert() {
@@ -99,6 +103,28 @@ struct CurrencyExchangeView: View {
     }
 }
 
+//struct AnimatableNumberModifier: AnimatableModifier {
+//    var number: NSDecimalNumber
+//    
+//    nonisolated var animatableData: NSDecimalNumber {
+//        get { number }
+//        set { number = newValue }
+//    }
+//    
+//    func body(content: Content) -> some View {
+//        content
+//            .overlay(
+//                Text("\(number.toString())")
+//            )
+//    }
+//}
+//
+//extension View {
+//    func animatingOverlay(for number: NSDecimalNumber) -> some View {
+//        modifier(AnimatableNumberModifier(number: number))
+//    }
+//}
+
 #Preview {
-    CurrencyExchangeView()
+    CurrencyExchangeView(viewModel: CurrencyExchangeViewModel())
 }

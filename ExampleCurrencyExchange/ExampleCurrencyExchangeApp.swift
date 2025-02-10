@@ -11,7 +11,7 @@ import SwiftUI
 struct ExampleCurrencyExchangeApp: App {
     var body: some Scene {
         WindowGroup {
-            CurrencyExchangeView()
+            CurrencyExchangeView(viewModel: CurrencyExchangeViewModel())
         }
     }
 }
