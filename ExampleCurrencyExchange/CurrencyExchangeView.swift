@@ -11,8 +11,6 @@ struct CurrencyExchangeView: View {
     
     @ObservedObject var viewModel: CurrencyExchangeViewModel = CurrencyExchangeViewModel()
     
-    private let currencies = ISO4217Code.allCases.map { $0.code }
-    
     @State private var amount: String = ""
     @State private var sourceCurrency: String = "USD"
     @State private var destinationCurrency: String = "ZAR"
@@ -33,7 +31,7 @@ struct CurrencyExchangeView: View {
                 .font(.largeTitle)
                 .fontWeight(.bold)
             
-            TextField("0", text: $amount)
+            TextField(NSDecimalNumber.zero.toString(locale: .current), text: $amount)
                 .keyboardType(.decimalPad)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .onChange(of: amount, { oldValue, newValue in
@@ -50,8 +48,10 @@ struct CurrencyExchangeView: View {
                     Text("From")
                         .font(.headline)
                     Picker("Source Currency", selection: $sourceCurrency) {
-                        ForEach(currencies, id: \.self) { currency in
-                            Text(currency)
+                        ForEach(viewModel.supportedCurrencies.map { $0.code }, id: \.self) { code in
+                            if let currency = ISO4217Code(code: code) {
+                                Text(currency.description)
+                            }
                         }
                     }
                     .onChange(of: sourceCurrency, { oldValue, newValue in
@@ -67,8 +67,10 @@ struct CurrencyExchangeView: View {
                     Text("To")
                         .font(.headline)
                     Picker("Destination Currency", selection: $destinationCurrency) {
-                        ForEach(currencies, id: \.self) { currency in
-                            Text(currency)
+                        ForEach(viewModel.supportedCurrencies.map { $0.code }, id: \.self) { code in
+                            if let currency = ISO4217Code(code: code) {
+                                Text(currency.description)
+                            }
                         }
                     }
                     .pickerStyle(MenuPickerStyle())

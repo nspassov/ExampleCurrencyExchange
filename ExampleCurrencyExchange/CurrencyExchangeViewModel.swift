@@ -17,6 +17,7 @@ class CurrencyExchangeViewModel: ObservableObject, EventNotifying {
     @Published private(set) var sourceAmount: NSDecimalNumber?
     @Published private(set) var destinationCurrency: ISO4217Code?
     @Published private(set) var destinationAmount: NSDecimalNumber?
+    @Published private(set) var supportedCurrencies = ISO4217Code.allCases
     
     private var timer: AnyCancellable?
     
@@ -26,7 +27,7 @@ class CurrencyExchangeViewModel: ObservableObject, EventNotifying {
         
         self.timer = nil
         
-        self.sourceAmount = NSDecimalNumber.from(string: sourceAmount, locale: .posix)
+        self.sourceAmount = NSDecimalNumber.from(string: sourceAmount, locale: .current)
         self.sourceCurrency = ISO4217Code(code: sourceCurrency)
         self.destinationCurrency = ISO4217Code(code: destinationCurrency)
         
@@ -72,17 +73,14 @@ class CurrencyExchangeViewModel: ObservableObject, EventNotifying {
     }
     
     private func convert() async {
-        guard let sourceAmount = sourceAmount?.toString(locale: .posix),
+        guard let sourceAmount = sourceAmount?.toString(locale: .current),
               let sourceCurrency = sourceCurrency?.code,
               let destinationCurrency = destinationCurrency?.code else {
-           return
+            debugLog("Missing parameters")
+            return
         }
         await self.convert(sourceAmount: sourceAmount,
                            sourceCurrency: sourceCurrency,
                            destinationCurrency: destinationCurrency)
-    }
-    
-    func getCurrencyCodes() -> [String] {
-        return ISO4217Code.allCases.map { $0.description }
     }
 }

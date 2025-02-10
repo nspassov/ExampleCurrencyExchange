@@ -70,7 +70,7 @@ extension NSDecimalNumber {
         return Self.formatter.string(from: self) ?? ""
     }
     
-    static func from(string: String, locale: Locale = .current) -> NSDecimalNumber? {
+    static func from(string: String, locale: Locale) -> NSDecimalNumber? {
         guard !string.isEmpty else {
             return NSDecimalNumber.zero
         }
