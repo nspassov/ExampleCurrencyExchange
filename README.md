@@ -1,6 +1,6 @@
 # Currency Exchange
 
-This is a small app for doing currency exchange. After selecting the source and destination currencies, the app automatically performs currency exchange based on the amount entered in the input field. Some currency pairs have a lot of volatility, so the result is automatically updated every 10 seconds.
+This is a small app for doing currency exchange. After selecting the source and destination currencies, the app automatically performs currency exchange based on the amount entered in the input field. Some currency pairs are quite volatile, so the result is automatically updated every 10 seconds.
 
 Exchange can be done in two ways: by entering the source amount, or by entering the desired amount. The web service doing the exchange supports both modes. Modes can be switched using the button.
 
