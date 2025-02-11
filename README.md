@@ -32,4 +32,4 @@ The user interface is basic in terms of style given that there are no visual req
 ## Building and Running the Project
 
  - Open ExampleCurrenctExchange.xcodeproj and build the ExampleCurrenctExchange target using Xcode 16
- - Need SSH authentication configured with GitHub to fetch the dependencies
+ - Configure SSH authentication with GitHub to fetch the dependencies
