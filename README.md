@@ -27,7 +27,7 @@ The app attempts to parse error payloads received from the web service and displ
 
 The list of currencies is built into the app. Ideally, a web service that provides the list of supported currencies (or currency pairs) would be used. I think the existing implementation enables integration with such service in a fairly straightforward way, by extending the `APIClient` and adding some additional calls inside the `CurrencyExchangeViewModel`.
 
-The user interface is basic in terms of style given that there are no visual requirements, but I have made sure to have an animation when switching exchange modes. During network calls the progerss indicator also animates, although briefly.
+The user interface is basic in terms of style given that there are no visual requirements, but I have made sure to have an animation when switching exchange modes. During network calls the progress indicator also animates, although briefly.
 
 ## Building and Running the Project
 
