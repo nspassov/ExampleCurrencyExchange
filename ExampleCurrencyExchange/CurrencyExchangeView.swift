@@ -6,14 +6,15 @@
 //
 
 import SwiftUI
+import SPAComponents
 
 struct CurrencyExchangeView: View {
     
     @ObservedObject var viewModel: CurrencyExchangeViewModel
     
     @State private var amount: String = ""
-    @State private var sourceCurrency: String = "BGN"
-    @State private var destinationCurrency: String = "EUR"
+    @State private var sourceCurrency: String = "USD"
+    @State private var destinationCurrency: String = "ZAR"
     @State private var readOnlyAmount: String = ""
     
     @FocusState private var focusedField: FocusedField?
@@ -150,6 +151,11 @@ struct CurrencyExchangeView: View {
             }
             
             Spacer()
+        }
+        .fixedSize(horizontal: true, vertical: false)
+        .overlay {
+            ProgressIndicatorViewSUI(shouldShow: $viewModel.isLoading)
+                .opacity(viewModel.isLoading ? 1 : 0)
         }
     }
     

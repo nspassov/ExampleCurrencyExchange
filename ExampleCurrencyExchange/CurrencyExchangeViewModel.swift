@@ -18,6 +18,7 @@ class CurrencyExchangeViewModel: ObservableObject, EventNotifying {
     @Published private(set) var destinationCurrency: ISO4217Code? = .zar
     @Published private(set) var destinationAmount: NSDecimalNumber = .zero
     @Published private(set) var supportedCurrencies = ISO4217Code.allCases.sorted()
+    @Published var isLoading: Bool = false
     
     private(set) var error: CommonError? {
         didSet {
@@ -53,9 +54,12 @@ class CurrencyExchangeViewModel: ObservableObject, EventNotifying {
             return
         }
         
+        self.isLoading = true
         let result = await APIClient().getCurrencyExchange(amount: .source(sourceAmount.toString(locale: .posix)),
                                                            sourceCurrency: sourceCurrency.code,
                                                            destinationCurrency: destinationCurrency.code)
+        self.isLoading = false
+        
         switch result {
         case .success(let value):
             debugLog(value)
@@ -106,9 +110,12 @@ class CurrencyExchangeViewModel: ObservableObject, EventNotifying {
             return
         }
         
+        self.isLoading = true
         let result = await APIClient().getCurrencyExchange(amount: .destination(destinationAmount.toString(locale: .posix)),
                                                            sourceCurrency: sourceCurrency.code,
                                                            destinationCurrency: destinationCurrency.code)
+        self.isLoading = false
+        
         switch result {
         case .success(let value):
             debugLog(value)

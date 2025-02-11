@@ -34,7 +34,7 @@
       "location" : "git@github.com:nspassov/SPAComponents.git",
       "state" : {
         "branch" : "main",
-        "revision" : "cfe4b655c57837af611e5e7c8f99a46eb45b08ba"
+        "revision" : "d995b8dc8d6b12893fb9e0d89de20c0cf48ae50e"
       }
     },
     {
@@ -43,7 +43,7 @@
       "location" : "git@github.com:nspassov/SPAExtensions.git",
       "state" : {
         "branch" : "main",
-        "revision" : "6f80498c19f5554c8d6bc094c7db6c254d8cb45b"
+        "revision" : "cbcb3785cac084d586a1eb9749b5fad468127fa5"
       }
     },
     {
