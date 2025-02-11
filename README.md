@@ -8,7 +8,7 @@ Exchange can be done in two ways: by entering the source amount, or by entering 
 
  - Implemented entirely using Swift and SwiftUI
    - Decided to go with SwiftUI instead of UIKit in order to experiment a bit
-   - The deployment target is SDK 16 in order to try out some of the more recent SwiftUI methods while still maintaing some compatibility.
+   - The deployment target is SDK 16 in order to maintain some compatibility
  - Makes use of Swift 6 and full concurrency checking
  - The project depends on my own libraries (SPAExtensions and SPAComponents), which contain reusable logic for doing network requests, displaying errors and progress indication:
    - `URLSession` Extension
